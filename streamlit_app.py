@@ -6,7 +6,7 @@ import tempfile
 
 st.set_page_config(page_title="Physiotherapy Assessment Platform", layout="wide")
 
-st.title("🏥 Physiotherapy Clinical Assessment System")
+st.title("Physiotherapy Clinical Assessment System")
 
 tabs = st.tabs([
 "Demographics",
