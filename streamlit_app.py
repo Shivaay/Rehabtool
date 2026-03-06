@@ -8,223 +8,297 @@ st.set_page_config(page_title="Physiotherapy Assessment Platform", layout="wide"
 
 st.title("🏥 Physiotherapy Clinical Assessment System")
 
-# -------------------------
-# DEMOGRAPHIC DATA
-# -------------------------
+tabs = st.tabs([
+"Demographics",
+"Chief Complaint",
+"History",
+"Observation",
+"Examination",
+"ROM",
+"MMT",
+"Sensory",
+"Neurological",
+"Diagnosis & Report"
+])
 
-st.header("Patient Demographics")
+# ------------------------------------------------
+# DEMOGRAPHICS
+# ------------------------------------------------
 
-col1, col2, col3 = st.columns(3)
+with tabs[0]:
 
-with col1:
-    name = st.text_input("Patient Name")
-    age = st.number_input("Age", 0, 120)
+    st.header("Demographic Data")
 
-with col2:
-    gender = st.selectbox("Gender", ["Male","Female","Other"])
-    phone = st.text_input("Phone Number")
+    col1,col2,col3 = st.columns(3)
 
-with col3:
-    occupation = st.text_input("Occupation")
-    visit_date = st.date_input("Visit Date")
+    with col1:
+        name = st.text_input("Name")
+        age = st.number_input("Age",0,120)
 
-# -------------------------
-# MEDICAL HISTORY
-# -------------------------
+    with col2:
+        gender = st.selectbox("Gender",["Male","Female","Other"])
+        occupation = st.text_input("Occupation")
 
-st.header("Medical History")
+    with col3:
+        dominance = st.selectbox("Dominant Hand",["Right","Left"])
+        address = st.text_area("Address")
 
-conditions = [
-"Diabetes",
-"Hypertension",
-"Thyroid Disorder",
-"Cardiac Disease",
-"Asthma",
-"Arthritis",
-"Osteoporosis",
-"Previous Surgery",
-"Neurological Disorder"
-]
 
-history = st.multiselect("Select Existing Conditions", conditions)
+# ------------------------------------------------
+# CHIEF COMPLAINT
+# ------------------------------------------------
 
-other_history = st.text_area("Other Medical History")
+with tabs[1]:
 
-# -------------------------
-# PAIN SCALE
-# -------------------------
+    st.header("Chief Complaint – Functional Difficulty")
 
-st.header("Pain Assessment")
+    difficulty = st.multiselect(
+    "Difficulty in",
+    [
+    "Walking",
+    "ADL",
+    "Sitting",
+    "Standing",
+    "Overhead Activities",
+    "Working"
+    ]
+    )
 
-pain_score = st.slider("Pain Level (VAS Scale)", 0, 10)
+    chief_notes = st.text_area("Additional Complaint Description")
 
-pain_area = st.multiselect(
-"Area of Pain",
-[
-"Neck","Shoulder","Upper Back","Lower Back",
-"Hip","Knee","Ankle","Foot","Elbow","Wrist"
-]
-)
 
-# -------------------------
+# ------------------------------------------------
+# HISTORY
+# ------------------------------------------------
+
+with tabs[2]:
+
+    st.header("History")
+
+    present_history = st.text_area("Present History")
+
+    past_history = st.text_area("Past History")
+
+    family_history = st.text_area("Family History")
+
+    st.subheader("Medical History")
+
+    medical_conditions = st.multiselect(
+    "Select Conditions",
+    [
+    "Cancer","Diabetes","Hypoglycemia","Hypertension",
+    "Heart Diseases","Angina","Shortness of Breath",
+    "Stroke","Kidney Disease","UTI","Allergies",
+    "Asthma","Liver Disease","Polio","Chronic Bronchitis",
+    "Pneumonia","Emphysema","Migraine","Anemia",
+    "Ulcer","Arthritis"
+    ]
+    )
+
+    drug_history = st.text_area("Drug History")
+
+    surgical_history = st.text_area("Surgical History")
+
+    st.subheader("Pain Assessment")
+
+    pain_score = st.slider("Pain (VAS Scale)",0,10)
+
+    pain_area = st.multiselect(
+    "Pain Location",
+    ["Neck","Shoulder","Back","Hip","Knee","Ankle","Foot","Elbow","Wrist"]
+    )
+
+
+# ------------------------------------------------
+# OBSERVATION
+# ------------------------------------------------
+
+with tabs[3]:
+
+    st.header("Observation")
+
+    body_built = st.selectbox("Body Built",["Ectomorph","Mesomorph","Endomorph"])
+
+    swelling_grade = st.selectbox("Swelling Grade",["None","1+","2+","3+","4+"])
+
+    swelling_area = st.text_input("Swelling Area")
+
+    edema_grade = st.selectbox("Edema Grade",["None","1+","2+","3+","4+"])
+
+    edema_area = st.text_input("Edema Area")
+
+    scar_area = st.text_input("Scar Area")
+
+    ambulation = st.radio("Mode of Ambulation",["Independent","Dependent"])
+
+    appliances = st.radio("External Appliances",["Present","Not Present"])
+
+    gait = st.text_input("Gait Pattern")
+
+    involuntary = st.text_input("Involuntary Movement")
+
+    posture = st.text_input("Posture")
+
+
+# ------------------------------------------------
+# EXAMINATION
+# ------------------------------------------------
+
+with tabs[4]:
+
+    st.header("Vitals")
+
+    col1,col2,col3 = st.columns(3)
+
+    with col1:
+        HR = st.number_input("Heart Rate")
+
+    with col2:
+        RR = st.number_input("Respiratory Rate")
+
+    with col3:
+        weight = st.number_input("Weight")
+
+    muscle_tone = st.selectbox(
+    "Muscle Tone (MAS)",
+    ["0","1","1+","2","3","4"]
+    )
+
+
+# ------------------------------------------------
+# ROM
+# ------------------------------------------------
+
+with tabs[5]:
+
+    st.header("Range of Motion (Degrees)")
+
+    joints = [
+    "Shoulder Flexion","Shoulder Extension","Shoulder Abduction","Shoulder Adduction","Shoulder IR","Shoulder ER",
+    "Elbow Flexion","Elbow Extension",
+    "Wrist Flexion","Wrist Extension","Wrist UD","Wrist RD",
+    "Hip Flexion","Hip Extension","Hip Abduction","Hip Adduction","Hip IR","Hip ER",
+    "Knee Flexion","Knee Extension",
+    "Ankle Plantarflexion","Ankle Dorsiflexion"
+    ]
+
+    rom_data = {}
+
+    for j in joints:
+        rom_data[j] = st.number_input(j,0,200)
+
+# ------------------------------------------------
 # MMT
-# -------------------------
+# ------------------------------------------------
 
-st.header("Manual Muscle Testing (MMT)")
+with tabs[6]:
 
-mmt_scale = ["0","1","2","3","4","5"]
+    st.header("Manual Muscle Testing")
 
-mmt_shoulder = st.selectbox("Shoulder Strength", mmt_scale)
-mmt_elbow = st.selectbox("Elbow Strength", mmt_scale)
-mmt_hip = st.selectbox("Hip Strength", mmt_scale)
-mmt_knee = st.selectbox("Knee Strength", mmt_scale)
+    grades = ["0","1","2","3","4","5"]
 
-# -------------------------
-# RANGE OF MOTION
-# -------------------------
+    mmt_data = {}
 
-st.header("Range of Motion (Degrees)")
+    for j in joints:
+        mmt_data[j] = st.selectbox(f"{j} Strength",grades)
 
-col1, col2 = st.columns(2)
+# ------------------------------------------------
+# SENSORY
+# ------------------------------------------------
 
-with col1:
-    shoulder_rom = st.number_input("Shoulder ROM")
-    elbow_rom = st.number_input("Elbow ROM")
+with tabs[7]:
 
-with col2:
-    hip_rom = st.number_input("Hip ROM")
-    knee_rom = st.number_input("Knee ROM")
+    st.header("Sensory Examination")
 
-# -------------------------
-# EDEMA
-# -------------------------
+    superficial = st.multiselect(
+    "Superficial Sensation",
+    ["Light Touch","Pressure","Temperature","Pain"]
+    )
 
-st.header("Inflammation / Edema")
+    deep = st.multiselect(
+    "Deep Sensation",
+    ["Kinesthesia","Proprioception"]
+    )
 
-edema_grade = st.selectbox(
-"Edema Grade",
-["None","1+ Mild","2+ Moderate","3+ Deep","4+ Severe"]
-)
+    cortical = st.multiselect(
+    "Cortical Sensation",
+    ["2 Point Discrimination","Tactile Localization","Stereognosis"]
+    )
 
-# -------------------------
-# CLINICAL EXAMINATION
-# -------------------------
 
-st.header("Clinical Examination")
+# ------------------------------------------------
+# NEUROLOGICAL
+# ------------------------------------------------
 
-observation = st.text_area("On Observation")
+with tabs[8]:
 
-palpation = st.text_area("On Palpation")
+    st.header("Neurological Examination")
 
-examination = st.text_area("On Examination")
+    dtr = st.multiselect(
+    "Deep Tendon Reflex",
+    ["Biceps","Triceps","Knee","Ankle"]
+    )
 
-# -------------------------
-# SPECIAL TESTS
-# -------------------------
+    cranial = st.text_area("Cranial Nerve Examination")
 
-st.header("Special Tests")
+    coordination = st.text_area("Coordination")
 
-special_tests = st.text_area("Document Special Tests")
+    balance = st.text_area("Balance")
 
-# -------------------------
-# DIAGNOSIS
-# -------------------------
+    mmse = st.number_input("MMSE Score",0,30)
 
-st.header("Clinical Diagnosis")
+    dgi = st.number_input("Dynamic Gait Index",0,24)
 
-diagnosis = st.text_area("Diagnosis")
+    investigation = st.text_area("Investigations")
 
-# -------------------------
-# REHAB PROTOCOL
-# -------------------------
 
-st.header("Rehabilitation Plan")
+# ------------------------------------------------
+# DIAGNOSIS & REPORT
+# ------------------------------------------------
 
-rehab = st.text_area("Rehabilitation Protocol")
+with tabs[9]:
 
-# -------------------------
-# REPORT GENERATION
-# -------------------------
+    st.header("Diagnosis")
 
-def create_pdf():
+    diagnosis = st.text_area("Clinical Diagnosis")
 
     styles = getSampleStyleSheet()
-    
-    file = tempfile.NamedTemporaryFile(delete=False)
-    
-    doc = SimpleDocTemplate(file.name)
-    
-    story = []
-    
-    story.append(Paragraph("Physiotherapy Assessment Report", styles['Title']))
-    story.append(Spacer(1,20))
-    
-    story.append(Paragraph(f"Patient Name: {name}", styles['Normal']))
-    story.append(Paragraph(f"Age: {age}", styles['Normal']))
-    story.append(Paragraph(f"Gender: {gender}", styles['Normal']))
-    story.append(Paragraph(f"Phone: {phone}", styles['Normal']))
-    
-    story.append(Spacer(1,20))
-    
-    story.append(Paragraph("Medical History:", styles['Heading2']))
-    story.append(Paragraph(", ".join(history), styles['Normal']))
-    story.append(Paragraph(other_history, styles['Normal']))
-    
-    story.append(Spacer(1,20))
-    
-    story.append(Paragraph("Pain Assessment:", styles['Heading2']))
-    story.append(Paragraph(f"Pain Score: {pain_score}", styles['Normal']))
-    story.append(Paragraph(f"Pain Area: {', '.join(pain_area)}", styles['Normal']))
-    
-    story.append(Spacer(1,20))
-    
-    story.append(Paragraph("MMT Results:", styles['Heading2']))
-    story.append(Paragraph(f"Shoulder: {mmt_shoulder}", styles['Normal']))
-    story.append(Paragraph(f"Elbow: {mmt_elbow}", styles['Normal']))
-    story.append(Paragraph(f"Hip: {mmt_hip}", styles['Normal']))
-    story.append(Paragraph(f"Knee: {mmt_knee}", styles['Normal']))
-    
-    story.append(Spacer(1,20))
-    
-    story.append(Paragraph("ROM:", styles['Heading2']))
-    story.append(Paragraph(f"Shoulder: {shoulder_rom}", styles['Normal']))
-    story.append(Paragraph(f"Elbow: {elbow_rom}", styles['Normal']))
-    story.append(Paragraph(f"Hip: {hip_rom}", styles['Normal']))
-    story.append(Paragraph(f"Knee: {knee_rom}", styles['Normal']))
-    
-    story.append(Spacer(1,20))
-    
-    story.append(Paragraph("Observation:", styles['Heading2']))
-    story.append(Paragraph(observation, styles['Normal']))
-    
-    story.append(Paragraph("Palpation:", styles['Heading2']))
-    story.append(Paragraph(palpation, styles['Normal']))
-    
-    story.append(Paragraph("Examination:", styles['Heading2']))
-    story.append(Paragraph(examination, styles['Normal']))
-    
-    story.append(Paragraph("Special Tests:", styles['Heading2']))
-    story.append(Paragraph(special_tests, styles['Normal']))
-    
-    story.append(Paragraph("Diagnosis:", styles['Heading2']))
-    story.append(Paragraph(diagnosis, styles['Normal']))
-    
-    story.append(Paragraph("Rehabilitation Protocol:", styles['Heading2']))
-    story.append(Paragraph(rehab, styles['Normal']))
-    
-    doc.build(story)
-    
-    return file.name
 
+    def generate_pdf():
 
-if st.button("Generate Report"):
+        file = tempfile.NamedTemporaryFile(delete=False)
 
-    pdf = create_pdf()
+        doc = SimpleDocTemplate(file.name)
 
-    with open(pdf, "rb") as f:
-        st.download_button(
-            label="Download Report",
-            data=f,
-            file_name="physiotherapy_report.pdf",
-            mime="application/pdf"
-        )
+        story = []
+
+        story.append(Paragraph("Physiotherapy Assessment Report",styles['Title']))
+        story.append(Spacer(1,20))
+
+        story.append(Paragraph(f"Name: {name}",styles['Normal']))
+        story.append(Paragraph(f"Age: {age}",styles['Normal']))
+        story.append(Paragraph(f"Gender: {gender}",styles['Normal']))
+        story.append(Paragraph(f"Occupation: {occupation}",styles['Normal']))
+
+        story.append(Spacer(1,20))
+
+        story.append(Paragraph("Chief Complaint",styles['Heading2']))
+        story.append(Paragraph(str(difficulty),styles['Normal']))
+
+        story.append(Paragraph("Diagnosis",styles['Heading2']))
+        story.append(Paragraph(diagnosis,styles['Normal']))
+
+        doc.build(story)
+
+        return file.name
+
+    if st.button("Generate Report"):
+
+        pdf = generate_pdf()
+
+        with open(pdf,"rb") as f:
+            st.download_button(
+            "Download PDF Report",
+            f,
+            file_name="physio_assessment_report.pdf"
+            )
